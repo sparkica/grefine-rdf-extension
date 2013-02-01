@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.deri.grefine.rdf.app.ApplicationContext;
 import org.deri.grefine.rdf.vocab.PrefixExistException;
+import org.deri.grefine.rdf.vocab.VocabularyImportException;
 import org.deri.grefine.rdf.vocab.VocabularyImporter;
 import org.json.JSONException;
 import org.json.JSONWriter;
@@ -17,25 +18,29 @@ import com.google.refine.Jsonizable;
 
 public class AddPrefixCommand extends RdfCommand{
 
-	public AddPrefixCommand(ApplicationContext ctxt) {
-		super(ctxt);
-	}
+    public AddPrefixCommand(ApplicationContext ctxt) {
+        super(ctxt);
+    }
 
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name").trim();
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name").trim();
         String uri = request.getParameter("uri").trim();
         String projectId = request.getParameter("project");
         String fetchOption = request.getParameter("fetch");
         try {    
-        	getRdfSchema(request).addPrefix(name, uri);
-        	if(fetchOption.equals("web")){
-        		String fetchUrl = request.getParameter("fetch-url");
-        		if(fetchUrl==null || fetchOption.trim().isEmpty()){
-        			fetchUrl = uri;
-        		}
-        		getRdfContext().getVocabularySearcher().importAndIndexVocabulary(name, uri, fetchUrl, projectId,new VocabularyImporter());
-        	}
+            
+            if(fetchOption.equals("web")){
+                String fetchUrl = request.getParameter("fetch-url");
+                if(fetchUrl==null || fetchOption.trim().isEmpty()){
+                    fetchUrl = uri;
+                }
+                getRdfContext().getVocabularySearcher().importAndIndexVocabulary(name, uri, fetchUrl, projectId,new VocabularyImporter());
+            }
+            //add prexif only if everything went ok - i.e. no exception is thrown, 
+            //otherwise prefix is added, but no vocabulary is loaded
+            getRdfSchema(request).addPrefix(name, uri);
+            
             respondJSON(response, new Jsonizable() {
                 
                 @Override
@@ -50,10 +55,22 @@ public class AddPrefixCommand extends RdfCommand{
             respondException(response, e);
         } catch (PrefixExistException e) {
             respondException(response, e);
-        } catch (Exception e){
-        	response.setCharacterEncoding("UTF-8");
+            
+        } catch (VocabularyImportException e) {
+            try {
+            //respondException(response, e);
+            logger.warn("Vocabulary import exception: " + e.getLocalizedMessage());
+            respond(response,"error", e.getLocalizedMessage());
+            } catch (JSONException e1) {
+                logger.error("Error constructing response.");
+                respond(response,"{\"code\":\"ok\"}");
+            }
+        } 
+        catch (Exception e){
+            logger.warn("General exception");
+            response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Type", "application/json");
-        	respond(response,"{\"code\":\"ok\"}");
+            respond(response,"{\"code\":\"ok\"}");
         }
     }
 }
