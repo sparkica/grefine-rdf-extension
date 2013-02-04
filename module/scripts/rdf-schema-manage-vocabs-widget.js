@@ -57,7 +57,7 @@ ManageVocabsWidget.prototype.renderBody = function(){
 					function(data)
 					{
 						dismissBusy();
-						if(data.code==='error'){
+						if(data.code === 'error'){
 							//TODO
 							console.log("Error removing prefix");
 						}else{

@@ -42,14 +42,12 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
 			//use jquery form plugin to upload file
 			$(this).ajaxSubmit({
 
-				url: "command/rdf-extension/upload-file-add-prefix",
-				type: "POST",
-				dataType: "json",
+				url: 'command/rdf-extension/upload-file-add-prefix',
+				type: 'POST',
+				dataType: 'json',
 				success:function(data) {
 					if(data.code === 'error') {
-						alert("There was an error while uploading vocabulary.\n"+
-								"Error: " + data.message
-							 );
+						alert(data.message);
 					} else {
 						if(onDone){
 							DialogSystem.dismissUntil(self._level - 1);
@@ -66,17 +64,17 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
 	    
 		dismissBusy = DialogSystem.showBusy('Trying to import vocabulary from ' + uri);
 
-		$.post("command/rdf-extension/add-prefix",
+		$.post('command/rdf-extension/add-prefix',
 				{
-					name:name,
-					uri:uri,
-					"fetch-url":uri,
+					name: name,
+					uri: uri,
+					'fetch-url': uri,
 					project: theProject.id,
-					fetch:fetchOption
+					fetch: fetchOption
 				},
 				function(data)
 				{
-					if (data.code === "error"){
+					if (data.code === 'error'){
 						alert('Error:' + data.message)
 					}else{
 						if(onDone){
@@ -85,7 +83,8 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
 						DialogSystem.dismissUntil(self._level - 1);
 					}
 					dismissBusy();
-				}
+				},
+				'json'
 		);
 	});
 
@@ -127,7 +126,7 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
 NewPrefixWidget.prototype.suggestUri = function(prefix){
 	var self = this;
 	$.get(
-			"command/rdf-extension/get-prefix-cc-uri",
+			'command/rdf-extension/get-prefix-cc-uri',
 			{prefix:prefix},
 			function(data){
 				if(!self._elmts.uri.val() && data.uri){
@@ -139,6 +138,6 @@ NewPrefixWidget.prototype.suggestUri = function(prefix){
 					}
 				}
 			},
-			"json"
+			'json'
 	);
 };
