@@ -10,20 +10,9 @@ ManageVocabsWidget.prototype.show = function(){
     self._elmts = DOM.bind(dialog);
     
     self._elmts.cancelButton.click(function() { self._dismiss(); });
-        
-    self.renderBody();
-	
-	self._elmts.okButton.click(function() {
-		self._dismiss();
-    	self._prefixesManager._showPrefixes();
-	});
-	
-};
-
-ManageVocabsWidget.prototype.renderBody = function(){
-	var self = this;
-	self._elmts.addPrefix.click(function(e){
-		
+    
+	self._elmts.addPrefixBtn.click(function(e){
+		e.preventDefault();
 		self._prefixesManager._addPrefix(
 				false,
 				false,
@@ -31,9 +20,20 @@ ManageVocabsWidget.prototype.renderBody = function(){
 					self.renderBody();
 					}
 				);
-		e.preventDefault();
-		
 	});
+
+    
+    self.renderBody();
+	
+	self._elmts.okButton.click(function() {
+    	self._prefixesManager._showPrefixes();
+		self._dismiss();
+	});
+	
+};
+
+ManageVocabsWidget.prototype.renderBody = function(){
+	var self = this;
 	
 	var table = self._elmts.prefixesTable;
 	table.empty();
@@ -44,10 +44,10 @@ ManageVocabsWidget.prototype.renderBody = function(){
     		.append($('<th/>').text('Refresh'))
     		);
     
-    var getDeleteHandler = function(name){
-    	return function(e){
-    		e.preventDefault();
-    		dismissBusy = DialogSystem.showBusy('Deleting prefix ' + name);
+	var getDeleteHandler = function(name){
+		return function(e){
+			e.preventDefault();
+			dismissBusy = DialogSystem.showBusy('Deleting prefix ' + name);
 			$.post(
 					'command/rdf-extension/remove-prefix',
 					{
@@ -57,7 +57,7 @@ ManageVocabsWidget.prototype.renderBody = function(){
 					function(data)
 					{
 						dismissBusy();
-						if(data.code==='error'){
+						if(data.code === 'error'){
 							//TODO
 							console.log("Error removing prefix");
 						}else{
@@ -68,6 +68,7 @@ ManageVocabsWidget.prototype.renderBody = function(){
 				);
     	} 
     };
+    
     var getRefreshHandler = function(name,uri){
     	return function(e){
     		e.preventDefault();
@@ -93,16 +94,19 @@ ManageVocabsWidget.prototype.renderBody = function(){
     		}
     	} 
     };
+    
+	
+	
 	for(var i = 0; i< self._prefixesManager._prefixes.length; i++){
 		var name = self._prefixesManager._prefixes[i].name;
 		var uri = self._prefixesManager._prefixes[i].uri;
 		var delete_handle = $('<a/>').text('delete').attr('href','#').click(getDeleteHandler(name));
 		var refresh_handle = $('<a/>').text('refresh').attr('href','#').click(getRefreshHandler(name,uri));
 		var tr = $('<tr/>').addClass(i%2==1?'rdf-table-even':'rdf-table-odd')
-							.append($('<td>').text(self._prefixesManager._prefixes[i].name))
-							.append($('<td>').text(self._prefixesManager._prefixes[i].uri))
-							.append($('<td>').html(delete_handle))
-							.append($('<td>').html(refresh_handle));
+		.append($('<td>').text(self._prefixesManager._prefixes[i].name))
+		.append($('<td>').text(self._prefixesManager._prefixes[i].uri))
+		.append($('<td>').html(delete_handle))
+		.append($('<td>').html(refresh_handle));
 		table.append(tr);
 	}
 
@@ -110,5 +114,5 @@ ManageVocabsWidget.prototype.renderBody = function(){
 
 
 ManageVocabsWidget.prototype._dismiss = function() {
-	  DialogSystem.dismissUntil(this._level - 1);
-	};
+	DialogSystem.dismissUntil(this._level - 1);
+};

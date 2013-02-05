@@ -23,10 +23,8 @@ RdfSchemaAlignmentDialog.prototype._init = function(schema) {
 	//this._schema.rootNodes.push(RdfSchemaAlignment.createNewRootNode());
 	self._nodeUIs = [];
 	
-	RdfSchemaAlignment._defaultNamespace = self._schema.baseUri;
-		
-}
-
+	RdfSchemaAlignment._defaultNamespace = self._schema.baseUri;		
+};
 
 RdfSchemaAlignmentDialog.prototype._buildBody = function() {
     var self = this;
@@ -54,9 +52,8 @@ RdfSchemaAlignmentDialog.prototype._buildBody = function() {
     });
     
     var body = self._elmts.dialogBody;  
-    this._constructBody(body);
-    self._level = DialogSystem.showDialog(dialog);
-    
+    self._constructBody(body);
+    self._level = DialogSystem.showDialog(dialog);    
     this._renderBody(body);
 };
 
