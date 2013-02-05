@@ -8,7 +8,8 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
     var dialog = $(DOM.loadHTML("rdf-extension","scripts/dialogs/new-prefix-widget.html"));
     self._elmts = DOM.bind(dialog);
     self._level = DialogSystem.showDialog(dialog);
-
+    
+    
     if(msg){
     	self._elmts.message.addClass('message').html(msg);
     }
@@ -46,15 +47,22 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
     				type: "POST",
     				dataType: "json",
     				success:function(data) {
-    			    	if(onDone){
-    						onDone(name,uri);
-    						DialogSystem.dismissUntil(self._level - 1);
+    					dismissBusy();
+    					if (data.code === 'error')
+    					{
+    						alert("Error: " + data.message);
+    					} else {
+	    			    	if(onDone){
+	    						onDone(name,uri);
+	    						self._dismiss();
+	    			    	}	
     					}
     			    }
     		});
-    		
     		return false;
-    	}
+    		
+    		
+    	} 
     	
 		dismissBusy = DialogSystem.showBusy('Trying to import vocabulary from ' + uri);
     	
@@ -68,17 +76,19 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
 				},
 				function(data)
 				{
+					dismissBusy();
 		    		if (data.code === "error"){
 		    			alert('Error:' + data.message)
 		    		}else{
 		    			if(onDone){
 		    				onDone(name,uri);
+		    				self._dismiss();
 		    			}
-		    			DialogSystem.dismissUntil(self._level - 1);
 		    		}
-					dismissBusy();
+
 				}
 			);
+	    	
     });
     
     
@@ -88,7 +98,7 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
     });
     
     self._elmts.cancelButton.click(function() {
-        DialogSystem.dismissUntil(self._level - 1);
+        self._dismiss();
     });
     
     self._elmts.advancedButton.click(function() {
@@ -114,19 +124,18 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
     self._elmts.prefix.change(function(){
     	self.suggestUri($(this).val());
     	}).focus();
-    
 };
 
 NewPrefixWidget.prototype.suggestUri = function(prefix){
 	var self = this;
 	$.get(
-			"command/rdf-extension/get-prefix-cc-uri",
+			'command/rdf-extension/get-prefix-cc-uri',
 			{prefix:prefix},
 			function(data){
 				if(!self._elmts.uri.val() && data.uri){
 					self._elmts.uri.val(data.uri);
 					if(self._elmts.message.text()){
-						self._elmts.message.find('div').remove().end().append($('<span>(a suggestion from <em><a target="_blank" href="http://prefix.cc">prefix.cc</a></em> is provided)</span>'));
+						self._elmts.uri_note.html('(a suggestion from <em><a target="_blank" href="http://prefix.cc">prefix.cc</a></em> is provided)');
 					}else{
 						self._elmts.uri_note.html('(suggested by <a target="_blank" href="http://prefix.cc">prefix.cc</a>)');
 					}
@@ -134,4 +143,9 @@ NewPrefixWidget.prototype.suggestUri = function(prefix){
 			},
 			"json"
 		);
+};
+
+NewPrefixWidget.prototype._dismiss =  function() {
+	var self = this;
+	DialogSystem.dismissUntil(self._level - 1);
 };
