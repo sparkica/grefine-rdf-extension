@@ -102,7 +102,7 @@ public class VocabularySearcher implements IVocabularySearcher {
 		importer.importVocabulary(name, uri, repository, classes, properties);
 		
 		if(classes.size() == 0 && properties.size() == 0) {
-			String message = "Error importing vocabulary from file. Bad URI or malformed vocabulary file."; 
+			String message = "Error importing vocabulary from file. Bad URI or malformed vocabulary file. "; 
 			message +="Try to import with empty URI.";
 			throw new VocabularyImportException(message, new Throwable("Bad URI or vocabulary file."));
 		}
