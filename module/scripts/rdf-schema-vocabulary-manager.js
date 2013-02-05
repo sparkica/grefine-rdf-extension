@@ -1,4 +1,4 @@
-function RdfPrefixesManager (dialog,prefixes){
+function RdfPrefixesManager (dialog, prefixes){
 	this._dialog = dialog;
 	//prefixes have not been initialized
 	var self = this;
