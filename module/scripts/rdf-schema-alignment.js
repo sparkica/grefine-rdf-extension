@@ -52,8 +52,8 @@ RdfSchemaAlignmentDialog.prototype._buildBody = function() {
     });
     
     var body = self._elmts.dialogBody;  
-    self._constructBody(body);
     self._level = DialogSystem.showDialog(dialog);    
+    self._constructBody(body);
     this._renderBody(body);
 };
 
@@ -126,8 +126,7 @@ RdfSchemaAlignmentDialog.prototype._renderBody = function(body) {
     		}
     	}
     });
-    //$("#rdf-schema-alignment-tabs-preview").css("display", "");
-    //$("#rdf-schema-alignment-tabs-vocabulary-manager").css("display", "");
+    $("#rdf-schema-alignment-tabs-preview").css("display", "");
 
     self._canvas = $(".schema-alignment-dialog-canvas");
     self._nodeTable = $('<table></table>')
