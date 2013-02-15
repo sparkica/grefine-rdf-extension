@@ -1,12 +1,13 @@
-This project was originally developed by DERI  for Google Refine and and added following functionalities:
+=RDF-Extension
+
+This project was originally developed by DERI as an extension for Google Refine that added:
 * reconcilation services for registered SPARQL endpoints
 * a graphical user interface(GUI) for exporting data of Google Refine projects in RDF format. The export is based on mapping the data to a template graph using the GUI.
 
-The repository has been forked and updated to work with OpenRefine, next version of Google Refine.
+The repository has been forked and updated to work with OpenRefine, next (updated) version of Google Refine.
+This extension is now also a part of LODRefine -- LOD-enabled version of OpenRefine (http://github.com/sparkica/OpenRefine)
 
-
-INSTALL & BUILD
-----------------
+== INSTALL & BUILD
 
 1. Pull OpenRefine's code from repository: http://github.com/OpenRefine/OpenRefine
 2. Pull this repository into extensions folder within OpenRefine
