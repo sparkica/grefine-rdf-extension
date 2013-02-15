@@ -6,6 +6,7 @@ The repository has been forked and updated to work with OpenRefine, next version
 
 
 INSTALL & BUILD
+----------------
 
 1. Pull OpenRefine's code from repository: http://github.com/OpenRefine/OpenRefine
 2. Pull this repository into extensions folder within OpenRefine
