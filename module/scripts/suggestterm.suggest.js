@@ -39,9 +39,9 @@
                                  data["type_strict"] = o["type_strict"];
                                  data["type"] = theProject.id;
                                 
-                                 var url_str = o.service_url + o.service_path + "?" + $.param(data, true);
+                                 var url = o.service_url + o.service_path + "?" + $.param(data, true);
                                  var ajax_options = {
-                                         url: url_str,
+                                         url: o.service_url + o.service_path,
                                          data: data,
                                          traditional: true,  
                                         error: function(xhr) {
@@ -53,7 +53,7 @@
                                             self.input.trigger("fb-error", Array.prototype.slice.call(arguments));
                                           },
                                         success: function(data) {
-                                            $.suggest.cache[url_str] = data;
+                                            $.suggest.cache[url] = data;
                                             data.prefix = value;  // keep track of prefix to match up response with input value
                                             self.response(data, cursor ? cursor : -1);
                                           },
@@ -123,12 +123,11 @@
                      cache:false,
                      //             soft:true,
                      nomatch:  {
-                         title: 'No suggested matches. (Shift + Enter) to add it',
+                         title: "No suggested matches. (Shift + Enter) to add it",
                          heading: null,
                          tips: null
                          }
-                 }
-             )
+         })
      });
 
 })(jQuery);
