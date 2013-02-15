@@ -30,13 +30,16 @@
 	                        	 var self = this, 
 	                        	 o = this.options;
 	                        	 
+	                        	 console.log("Option in suggest:" + o["type_strict"]);
+	                        	 
 	                        	 var data = {};
 	                        	 var query = value;
 	                             data[o.query_param_name] = query;
 	                             
 	                             clearTimeout(this.request.timeout);
                     	    	 data["prefix"] = query;
-                    	    	 data["type_strict"] = "classes";
+                    	    	 //TODO: what about properties here?
+                    	    	 data["type_strict"] = o["type_strict"];
                     	    	 data["type"] = theProject.id;
 	                            
                     	    	 var url = o.service_url + o.service_path + "?" + $.param(data, true);
@@ -125,7 +128,9 @@
         			 service_url: "",
         			 service_path: "command/rdf-extension/suggest-term",
         			 flyout_service_path: "command/rdf-extension/suggest-term",
+        			 //TODO: what about properties #2
         			 type_strict:"classes",
+        			 //type_strict:"property",
         			 suggest_new:"Add it",
         			 cache:false,
         			 //             soft:true,
