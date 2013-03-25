@@ -78,7 +78,7 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
 				{
 					dismissBusy();
 		    		if (data.code === "error"){
-		    			alert('Error:' + data.message)
+		    			alert('Error:' + data.message);
 		    		}else{
 		    			if(onDone){
 		    				onDone(name,uri);
@@ -105,7 +105,7 @@ NewPrefixWidget.prototype.show = function(msg,def_prefix, onDone){
         self._elmts.fetching_options_table.show();
         $('#advanced_options_button').hide();
         $('#advanced_options_button').attr("disabled", "true");
-    })
+    });
     
     self._elmts.fetching_options_table
 	.hide()
