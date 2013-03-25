@@ -5,7 +5,7 @@ RdfSchemaAlignmentDialog.UINode = function(dialog, node, table, options) {
     
     this._linkUIs = [];
     this._detailsRendered = false;
-    
+        
     this._tr = table.insertRow(table.rows.length);
     this._tdMain = this._tr.insertCell(0);
     this._tdToggle = this._tr.insertCell(1);
@@ -615,7 +615,7 @@ RdfSchemaAlignmentDialog.UINode.prototype._showNodeConfigDialog = function(){
         		node.rdfTypes = cloneDeep(self._node.rdfTypes);
         	}
         	
-            DialogSystem.dismissUntil(level - 1);
+            DialogSystem.dismissUntil(self._level - 1);
             
             self._node = node;
             /*if('columnIndex' in node){
@@ -631,7 +631,7 @@ RdfSchemaAlignmentDialog.UINode.prototype._showNodeConfigDialog = function(){
     }).appendTo(footer);
     
     $('<button></button>').addClass('button').text("Cancel").click(function() {
-        DialogSystem.dismissUntil(level - 1);
+        DialogSystem.dismissUntil(self._level - 1);
     }).appendTo(footer);
     
     
