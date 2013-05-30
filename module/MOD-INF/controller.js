@@ -144,6 +144,10 @@ function init() {
 	RS.registerCommand(module, "addSindiceService", new AddSindiceService());
 	RS.registerCommand(module, "addStanbolService", new AddStanbolServiceCommand());
 	RS.registerCommand(module, "initializeServices", new InitializeServicesCommand());
+	
+	//Upload triples command
+	RS.registerCommand(module, "upload-triples", new UploadRdfCommand());
+	
 	//RefineServlet.registerCommand(module, "sindiceReconcile", new SindiceReconcileCommand());
 	//this is just to initialize ServiceRegistry
 	RS.registerCommand(module, "reconcile-initialize", new InitializationCommand());
@@ -159,6 +163,7 @@ function init() {
         module,
         [
             "scripts/rdf-data-table-view.js",
+            "scripts/dialogs/rdf-upload-triples.js",
             "scripts/menu-bar-extensions.js",
             "scripts/rdf-schema-alignment.js",
             "scripts/rdf-schema-alignment-ui-node.js",
