@@ -10,8 +10,9 @@ function RdfUploadTriplesDialog(onDone) {
 
 	this._elmts.okButton.click(function() {
 		console.log("ALL OK");
-		self._params.graph="http://myexample.com";
-		self._params.endpoint = "http://localhost:8890/sparql";
+		self._params.graph="http://my2example.com";
+		//self._params.endpoint = "http://localhost:8890/sparql";
+		self._params.endpoint = "http://demo.lod2.eu/virtuoso/sparql";
 		
 		//TODO: make sure schema exists
 		
