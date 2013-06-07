@@ -430,17 +430,23 @@ var RdfUploadTriplesExtension = {handlers:{}};
 RdfUploadTriplesExtension.handlers.uploadDataToVirtuoso = function() {
 
 	new RdfUploadTriplesDialog(function(params) {
+		console.log("Posting request...");
 		$.post(
 				"command/rdf-extension/upload-triples",
 				{ "project" : theProject.id, 
 					"engine" : JSON.stringify(ui.browsingEngine.getJSON()),
-					"server": JSON.stringify(params),
+					"params": JSON.stringify(params),
 					"schema": JSON.stringify(theProject.overlayModels.rdfSchema)
 				},
 				function(o)
 				{
-					console.log("Results from uplading to Virtuoso...");
-					console.log(o);
+					console.log("Something is going on.");
+					if(o.status == "error") {
+						alert("Error uploading triples: " + o.message);
+					}
+					else {
+						alert("Yay! Upload completed.");
+					}
 				},
 				"json"
 		);

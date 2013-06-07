@@ -10,17 +10,21 @@ function RdfUploadTriplesDialog(onDone) {
 
 	this._elmts.okButton.click(function() {
 
-		//TODO: validate input fields
-		self._params.endpoint_type = self._elmts.endpointTypes.children(":selected").val();
+		self._params.endpoint = {}
+		self._params.endpoint.name = self._elmts.endpointName.val();
+		self._params.endpoint.url = self._elmts.endpointUrl.val();
+		self._params.endpoint.type = self._elmts.endpointTypes.children(":selected").val();
+		self._params.endpoint.auth = self._elmts.authMethod.children(":selected").val();
+		self._params.endpoint.graph = self._elmts.defaultGraph.val();
 		
-		//TODO: verify it is really an endpoint or at least URL
-		//TODO:graph should be URI
-		self._params.endpoint = self._elmts.endpoint;
-		self._params.graph = self._elmts.defaultGraph;
+		//TODO: what if we don't want default graph
+		self._params.graph = self._elmts.defaultGraph.val();
+		self._params.existing = false;
 		
-		//get credentials
-		//if checkbox checked, get credentials from config file at the load time
-		//else 
+		//TODO: what about credentials?
+		self._params.endpoint.username = self._elmts.userName.val();
+		self._params.endpoint.password = self._elmts.userPwd.val();
+		
 		
 		//how to store credentials? encode them and then decode them?
 		
@@ -29,8 +33,6 @@ function RdfUploadTriplesDialog(onDone) {
 					"They should be looked up in config file.")
 		}
 		
-		self._params.user = self._elmts.userName;
-		self._params.user = self._elmts.userPwd;
 		
 		if(!theProject.overlayModels.rdfSchema)
 		{
@@ -38,6 +40,10 @@ function RdfUploadTriplesDialog(onDone) {
 			DialogSystem.dismissUntil(self._level - 1);
 		}
 		
+		//schema is added later
+		
+		console.log("Parameters: ");
+		console.log(self._params);
 		self._onDone(self._params);
 		DialogSystem.dismissUntil(self._level - 1);
 			
@@ -49,7 +55,13 @@ function RdfUploadTriplesDialog(onDone) {
 	});
 	
 	this._elmts.endpointsList.change(function () {
-		self._elmts.endpoint.val = self._elmts.endpointsList.children(":selected").val()
+		self._elmts.endpointUrl.val(self._elmts.endpointsList.children(":selected").val())
+	});
+	
+	this._elmts.saveEndpointButton.click(function () {
+		//TODO: set up endpoint manager
+		alert("storing the endpoint or something");
+		//post request to store it all
 	});
 
 	this._level = DialogSystem.showDialog(this._dialog);
