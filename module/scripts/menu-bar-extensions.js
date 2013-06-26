@@ -307,6 +307,7 @@ ReconciliationRdfServiceDialog.prototype._footer = function(footer){
 			$.post("command/rdf-extension/addService",
 					{"datasource":"file_url","name":name,"url":file_url,properties:prop_uris, "file_format":file_format},
 					function(data){
+					    console.log("Adding service.");
 						self._dismissBusy();
 						RdfReconciliationManager.registerService(data,self._level);					
 					},"json");
@@ -315,14 +316,21 @@ ReconciliationRdfServiceDialog.prototype._footer = function(footer){
 
 		self._elmts.hidden_service_name.val(name);
 		self._elmts.hidden_properties.val(prop_uris);
-
+						
 		self._elmts.file_upload_form.ajaxSubmit({
 			dataType:  'json',
-			success: function(data) {
-				self._dismissBusy();
-				RdfReconciliationManager.registerService(data,self._level);
+			success: function(data, message) {
+		             self._dismissBusy();
+		             RdfReconciliationManager.registerService(data,self._level);
+			},
+			error: function(data, message) {
+			        alert("There was an error while uploading RDF dump: " + message);
+			        self._dismissBusy();
 			}
 		});
+		
+	      return false;
+
 
 	}).appendTo(footer);
 
