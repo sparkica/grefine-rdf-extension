@@ -8,6 +8,9 @@ function RdfSchemaAlignmentDialog(schema){
 	this._prefixesManager = new RdfPrefixesManager(this, this._schema.prefixes);   
 	this._replaceBaseUri(RdfSchemaAlignment._defaultNamespace || URL.getHostname()+'/',true);
 
+	//activate first tab
+	$("#rdf-schema-alignment-tabs").tabs('select',0);
+
 };
 
 RdfSchemaAlignmentDialog.prototype._init = function(schema) {
@@ -121,7 +124,8 @@ RdfSchemaAlignmentDialog.prototype._renderBody = function(body) {
 
 	$("#rdf-schema-alignment-tabs").tabs({
 		select:function(evt,tabs){
-			if(tabs.index===1){
+			console.log(tabs.index);
+			if(tabs.index == 1){
 				self._previewRdf();
 			}
 		}
