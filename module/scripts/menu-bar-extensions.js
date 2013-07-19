@@ -438,7 +438,7 @@ var RdfUploadTriplesExtension = {handlers:{}};
 RdfUploadTriplesExtension.handlers.uploadDataToVirtuoso = function() {
 
 	new RdfUploadTriplesDialog(function(params) {
-		console.log("Posting request...");
+		console.log("Posting upload request...");
 		$.post(
 				"command/rdf-extension/upload-triples",
 				{ "project" : theProject.id, 
